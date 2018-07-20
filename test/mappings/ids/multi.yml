@@ -1,0 +1,13 @@
+fields:
+  first:
+    type: string
+    primary_key: true
+  last:
+    type: string
+    primary_key: true
+  age:
+    type: integer
+    primary_key: true
+  various:
+    type: string
+  

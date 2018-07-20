@@ -1,0 +1,21 @@
+fields:
+  # What
+  title:
+    type: string
+    case_insensitive: true
+  integer:
+    type: integer
+    primary_key: true
+  float:
+    type: float
+    primary_key: true
+  date:
+    type: date
+    primary_key: true
+  datetime:
+    type: datetime
+    
+databases:
+  - engine: fakeDb
+    primary: true
+  

@@ -1,0 +1,8 @@
+fields:
+  id_field:
+    type: integer
+    primary_key: true
+  other:
+    type: string
+  other_date:
+    type: date
