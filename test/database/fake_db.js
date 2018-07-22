@@ -20,7 +20,6 @@ const fake_db = {
       ctx[map] = {}
     
     ctx[map][id] = data
-    console.log(ctx)
   }
 }
 

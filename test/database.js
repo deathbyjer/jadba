@@ -24,17 +24,41 @@ tap.doesNotThrow(() => {
 // Make sure that the connection returned is what it should be
 tap.type(cnt, "object", " - fakeDb connections are just objects")
 
-let basic, basic2
-let id, date
+async function checks() {
 
-basic = daomapper.create("basic")
-date = new Date()
+  let basic, basic2, basic3
+  let id, date
 
-basic.set({integer: 1, float: 1.2, date: date})
-id = basic.id()
-tap.doesNotThrow(() => {
-  daomapper.save(basic)
-}, " - should save")
+  basic = daomapper.create("basic")
+  date = new Date()
 
-basic2 = daomapper.find("basic", id)
-tap.equal(basic.id(), basic2.id(), " same object")
+  basic.set({integer: 1, float: 1.2, date: date})
+  id = basic.id()
+  await daomapper.save(basic)
+
+  basic2 = await daomapper.find("basic", id)
+  tap.equal(basic.id(), basic2.id(), " same object")
+  
+  basic2.title = "Title"
+  await daomapper.save(basic2)
+  tap.equal(basic2.getDirtyFields().length, 0, " none dirty post save")
+  
+  basic.title = "Second Title"
+  await daomapper.save(basic)
+  
+  basic2.datetime = new Date()
+  await daomapper.save(basic2)
+  
+  basic3 = await daomapper.find("basic", id)
+  tap.equal(basic3.title, "Second Title", " - should only update dirty fields")
+  
+  // Save also works
+  basic2.title = "Third Title"
+  await basic2.save()
+  basic3 = await daomapper.find("basic", id)
+  tap.equal(basic3.title, "Third Title", " save() function works")
+  
+  
+}
+
+checks()
