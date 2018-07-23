@@ -26,7 +26,7 @@ tap.type(cnt, "object", " - fakeDb connections are just objects")
 
 async function checks() {
 
-  let basic, basic2, basic3
+  let basic, basic2, basic3, basic4, basics
   let id, date
 
   basic = daomapper.create("basic")
@@ -57,6 +57,18 @@ async function checks() {
   await basic2.save()
   basic3 = await daomapper.find("basic", id)
   tap.equal(basic3.title, "Third Title", " save() function works")
+
+  // Save multiple
+  basic.title = "Fourth Title"
+  basic4 = daomapper.create("basic")
+  basic4.set({integer: 2, float: 2.0, date: date})
+  
+  await daomapper.saveAll([basic, basic4])
+  basics = await daomapper.findAll("basic", [basic.id(), basic4.id()])
+  
+  let keys = Object.keys(basics)
+  tap.equal(keys.length, 2)
+  tap.equal(keys.filter(id => [basic.id(), basic4.id()].includes(id)).length, 2)
   
   
 }

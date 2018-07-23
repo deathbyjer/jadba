@@ -7,23 +7,39 @@ const Base = {
   
   loadMap(connection, map) {},
   
-  find(connection, map, id) { return {} },
+  async find(connection, map, id) { return {} },
   
-  findAll(connection, map, ids) { return [] },
+  // Todo: Parralelize this
+  async findAll(connection, map, ids) { 
+    const out = {}
+    for (let id of ids)
+      out[id] = await this.find(connection, map, id)
+
+    return out
+  },
   
-  findIndex(connection, map, fields, values) {},
+  async findIndex(connection, map, fields, values) {},
   
-  save(connection, map, id, data) {},
+  async save(connection, map, id, data) {},
   
-  saveAll(connection, map, ids, datas) {},
+  async saveAll(connection, map, ids, datas) {
+    if (ids.length != datas.length)
+      return false
+    
+    // TODO: Parralelize this
+    for (let i = 0; i < ids.length; i++)
+      await this.save(connection, map, ids[i], datas[i])
+    
+    return true
+  },
   
-  saveIndex(connection, map, fields, values, unique) {},
+  async saveIndex(connection, map, fields, values, unique) {},
   
   transformField(connection, value, field_options, indexing) { return value },
   
-  destroy(connection, map, id) {},
+  async destroy(connection, map, id) {},
   
-  destroyAll(connection, map, ids) {}
+  async destroyAll(connection, map, ids) {}
 }
 
 module.exports = Base
