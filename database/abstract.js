@@ -51,7 +51,13 @@ const Base = {
   
   async destroy(connection, map, id) {},
   
-  async destroyAll(connection, map, ids) {}
+  async destroyAll(connection, map, ids) {
+    const promises = []
+    for (let i = 0; i < ids.length; i++)
+      promises.push(this.destroy(connection, map, ids[i]))
+    
+    return Promise.all(promises)
+  }
 }
 
 module.exports = Base
